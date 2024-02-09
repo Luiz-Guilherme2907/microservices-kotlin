@@ -48,7 +48,7 @@ class PersonServices {
     }
 
 
-    fun deletePeople(id: Long) {
+    fun delete(id: Long) {
         logger.info("Deleting One Person with ID $id")
         val entity = repository.findById(id)
             .orElseThrow { ResourceNotFoundException("No records found for this id!") }
