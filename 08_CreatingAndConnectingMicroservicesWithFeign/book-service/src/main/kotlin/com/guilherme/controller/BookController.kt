@@ -1,6 +1,7 @@
 package com.guilherme.controller
 
 import com.guilherme.model.Book
+import com.guilherme.proxy.CambioProxy
 import com.guilherme.repository.BookRepository
 import com.guilherme.response.Cambio
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,8 +25,28 @@ class BookController {
 
     @Autowired
     private lateinit var repository: BookRepository
+
+    @Autowired
+    private lateinit var proxy: CambioProxy
+    //Utilizando Feign
     @GetMapping(value = ["/{id}/{currency}"])
     fun findBook(
+        @PathVariable("id") id: Long,
+        @PathVariable("currency") currency: String
+    ): Book?{
+        val book = repository.findById(id).orElseThrow{RuntimeException("Book not Found")}
+
+        val cambio = proxy.getCambio(book.price, "USD", currency)
+
+        val port = environment.getProperty("local.server.port")
+        book.environment = "$port FEIGN"
+        book.currency = currency
+        book.price = cambio!!.convertedValue
+        return book
+    }
+   // Utilizando Rest Template
+    @GetMapping(value = ["/v1/{id}/{currency}"])
+    fun findBookV1(
         @PathVariable("id") id: Long,
         @PathVariable("currency") currency: String
     ): Book?{
