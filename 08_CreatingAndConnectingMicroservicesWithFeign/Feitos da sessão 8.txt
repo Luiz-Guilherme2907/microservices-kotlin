@@ -1,0 +1,3 @@
+Nesta sessão criamos e conectamos microsserviços com Feign, inialmente criamos o cambio microservice estruturamos sua estrutura gradualmente, primeiro com mocks e depois integrando com seu banco de dados, neste momento configuramos o JPA e adicionamos o flyway ao microserviço, vimos o quanto o flyway é uma ferramenta poderosa para versionamento de DB.
+
+Depois criamos o segundo microserviço o book-service e o configuramos para consumir o cambio microservice, após consumir o cambio-service utilizando o rest template, integrei o Feign para melhor leitura e manutenção do código.
